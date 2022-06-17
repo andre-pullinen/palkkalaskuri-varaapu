@@ -34,7 +34,7 @@ const initialState = () => ({
     isNightPay: true,
     nightPay: 6.28,
     sundayPay: 1,
-    salary: 10.28
+    amount: 10.28
   },
   places: {},
   jobHistory: {}

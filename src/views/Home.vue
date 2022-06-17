@@ -92,7 +92,7 @@ console.log(store.state.user.evak)
         tax:
         <input type="number" v-model="salary" />
       </div>
-      <shift name="Prisma" :started-at="dayjs()" :finished-at="dayjs()" />
+      <shift name="Prisma" :started-at="dayjs()" :finished-at="dayjs().add(6, 'h')" />
     </form>
     <router-link to="calendar">Перейти к календарю</router-link>
   </div>

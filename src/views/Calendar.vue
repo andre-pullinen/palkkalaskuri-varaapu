@@ -7,17 +7,13 @@
       <div class="week__days">
         <div v-for="(day, key) in week.days" :key="key" class="day">
           <span class="day__marker">{{ day.dayOfMonth }}</span>
-          <div v-for="(job, key) in day.job" class="job" :key="key">
-            <span class="job__delete" @click="() => { deleteJob(job, key) }"><vue-feather type="x" size="0.8em"></vue-feather></span>
-            <span class="job__edit"><vue-feather type="edit" size="0.8em"></vue-feather></span>
-            <p class="job__title">{{ job.name }}</p>
-            <p class="job__time">{{ dayjs(job.startedAt).format('HH.mm') }} -
-              {{ dayjs(job.finishedAt).format('HH.mm') }}
-              ({{ humanizeTime(Math.abs(dayjs(job.startedAt).diff(dayjs(job.finishedAt), 'hour', true))) }})</p>
-            <p class="job__salary">
-              {{ store.getters['user/getSalaryForJob'](job, false) }} €
-            </p>
-          </div>
+          <shift v-for="(job, key) in day.job"
+                 :started-at="dayjs(job.startedAt)"
+                 :finished-at="dayjs(job.finishedAt)"
+                 :name="job.name"
+                 :key="key"
+                 @delete="deleteJob"
+          />
           <span class="day__add-job" @click.prevent="() => { showModal(day.date) }"><vue-feather type="plus" size="1em"></vue-feather></span>
         </div>
       </div>
@@ -60,6 +56,7 @@ import { computed, inject, ref } from 'vue'
 import VueFeather from 'vue-feather'
 import Datepicker from '@vuepic/vue-datepicker'
 import { useStore } from 'vuex'
+import Shift from '@/components/Calendar/Shift'
 
 const dayjs = inject('dayJS')
 
@@ -88,11 +85,6 @@ function showModal (date) {
   workDay.value = dayjs(date)
   console.log(date)
   isShow.value = true
-}
-function humanizeTime (hours) {
-  const n = new Date(0, 0)
-  n.setSeconds(+hours * 60 * 60)
-  return n.toTimeString().slice(0, 5)
 }
 function selectItemEventHandler (e) {
   workName.value = e
@@ -130,11 +122,7 @@ function getSalaryForWeek (week) {
 function closeModal () {
   isShow.value = false
 }
-function deleteJob (job, key) {
-  const payload = {
-    date: dayjs(job.date).format('YYYY-MM-DD'),
-    uuid: key
-  }
+function deleteJob (payload) {
   store.dispatch('user/removeJob', payload)
   // updateCalendar()
 }
