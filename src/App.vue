@@ -6,9 +6,26 @@
   <router-view/>
 </template>
 
+<script setup>
+import { onUnmounted } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+
+function updateHandler () {
+  store.dispatch('save')
+}
+
+window.addEventListener('beforeunload', updateHandler)
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', updateHandler)
+})
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+#app, #modals {
+  font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

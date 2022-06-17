@@ -1,25 +1,38 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+import store from '@/store/index'
+import pipeline from '@/middlewares/pipeline'
+import routes from '@/router/routes'
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  await store.restored
+
+  await store.dispatch('init')
+
+  // region Если нету то далее
+  if (!to.meta.middleware) {
+    return next()
+  }
+  // endregion
+
+  // region Запускаем конвеер защитников
+  const middleware = to.meta.middleware
+  const context = {
+    to,
+    from,
+    next,
+    store,
+    router
+  }
+  return middleware[0]({
+    ...context,
+    nextMiddleware: pipeline(context, middleware, 1)
+  })
+  // endregion
 })
 
 export default router
