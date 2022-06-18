@@ -27,8 +27,8 @@ const mapMutations = (namespace) => {
 const mapActions = (namespace) => {
   const store = useStore()
   return Object.fromEntries(
-    Object.keys(store._actions).map(
-      action => [action, value => store.dispatch(`${namespace}/${action}`, value)]
+    Object.keys(store._actions).filter((i) => i.startsWith(namespace)).map(
+      action => [action.replace(`${namespace}/`, ''), value => store.dispatch(action, value)]
     )
   )
 }

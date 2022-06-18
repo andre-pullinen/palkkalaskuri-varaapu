@@ -5,17 +5,12 @@
     <div v-for="(week, key) in weeks" :key="key" :class="'week ' + (Math.floor((week.diffOfPeriod + 5) / 2) % 2 ? 'blue' : 'pink')">
       <div class="week__number">#{{ week.weekNumber }}</div>
       <div class="week__days">
-        <div v-for="(day, key) in week.days" :key="key" class="day">
-          <span class="day__marker">{{ day.dayOfMonth }}</span>
-          <shift v-for="(job, key) in day.job"
-                 :started-at="dayjs(job.startedAt)"
-                 :finished-at="dayjs(job.finishedAt)"
-                 :name="job.name"
-                 :key="key"
-                 @delete="deleteJob"
-          />
-          <span class="day__add-job" @click.prevent="() => { showModal(day.date) }"><vue-feather type="plus" size="1em"></vue-feather></span>
-        </div>
+        <day v-for="(day, key) in week.days"
+             :date="dayjs(day.date).format('YYYY-MM-DD')"
+             :shifts="day.job"
+             :day-of-month="day.dayOfMonth"
+             :key="key"
+        />
       </div>
       <div class="week__salary">
         {{ getSalaryForWeek(week) }} €
@@ -53,12 +48,14 @@
 
 <script setup>
 import { computed, inject, ref } from 'vue'
-import VueFeather from 'vue-feather'
 import Datepicker from '@vuepic/vue-datepicker'
 import { useStore } from 'vuex'
-import Shift from '@/components/Calendar/Shift'
+import Day from '@/components/Calendar/Day'
 
 const dayjs = inject('dayJS')
+const event = inject('event')
+
+event.on('day.addShift', showModal)
 
 const store = useStore()
 
@@ -81,6 +78,7 @@ const workFullTime = computed(() => {
   }
   return { startDay, finishDay }
 }, 'h')
+// eslint-disable-next-line no-unused-vars
 function showModal (date) {
   workDay.value = dayjs(date)
   console.log(date)
@@ -121,10 +119,6 @@ function getSalaryForWeek (week) {
 
 function closeModal () {
   isShow.value = false
-}
-function deleteJob (payload) {
-  store.dispatch('user/removeJob', payload)
-  // updateCalendar()
 }
 function getNumberOfDaysInMonth (year, month) {
   return dayjs(`${year}-${month}-01`).daysInMonth()

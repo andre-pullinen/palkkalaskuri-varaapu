@@ -6,9 +6,10 @@
            :finished-at="dayjs(shift.finishedAt)"
            :name="shift.name"
            :key="key"
+           :uuid="key"
            @delete="deleteJob"
     />
-    <span class="day__add-job" @click="emit('addShift')"><vue-feather type="plus" size="1em"></vue-feather></span>
+    <span class="day__add-job" @click="addShift"><vue-feather type="plus" size="1em"></vue-feather></span>
   </div>
 </template>
 
@@ -16,20 +17,23 @@
 import VueFeather from 'vue-feather'
 import Shift from '@/components/Calendar/Shift'
 import { inject } from 'vue'
-import { mapMutations } from '@/map'
+import { mapActions } from '@/map'
 
 const dayjs = inject('dayJS')
+const event = inject('event')
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
   dayOfMonth: Number,
   date: String,
   shifts: Object
 })
-const emit = defineEmits(['addShift'])
-const { removeJob } = mapMutations('user')
+const { removeJob } = mapActions('user')
 
 function deleteJob (uuid) {
   removeJob({ uuid, date: props.date })
+}
+function addShift () {
+  event.trigger('day.addShift', props.date)
 }
 
 </script>

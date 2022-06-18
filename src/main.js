@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import event from './event'
 import dayjs from 'dayjs'
 import VueUniversalModal from 'vue-universal-modal'
 import SimpleTypeahead from 'vue3-simple-typeahead'
@@ -26,4 +27,5 @@ createApp(App)
     teleportTarget: '#modals'
   })
   .provide('dayJS', dayjs)
+  .provide('event', event)
   .mount('#app')

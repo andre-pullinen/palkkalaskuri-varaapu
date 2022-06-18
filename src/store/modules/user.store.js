@@ -66,11 +66,9 @@ const getters = {
     let salary = 0
     while (start.diff(end) < 0) {
       let diff = start.diff(end, 'h', true)
-      console.log('diff', diff)
       if (start.minute() !== 0) {
         diff = -(start.minute() / 60)
       }
-      console.log('diff_t', diff)
       const weekday = start.weekday()
       const hour = start.hour()
       if (diff < 0 && diff > -1) {
@@ -146,22 +144,22 @@ const mutations = {
     }
   },
   SET_EVAK (state, val) {
-    state.evak = val
+    state.salaryT.evak = val
   },
   SET_TVAK (state, val) {
-    state.tvak = val
+    state.salaryT.tvak = val
   },
   SET_TAX (state, val) {
-    state.tax = val
+    state.salaryT.tax = val
   },
   SET_SALARY (state, val) {
-    state.salary = val
+    state.salaryT.amount = val
   },
   SET_ISHOLIDAYPAY (state, val) {
-    state.isHolidayPay = val
+    state.salaryT.isHolidayPay = val
   },
   SET_HOLIDAYPAY (state, val) {
-    state.holidayPay = val
+    state.salaryT.holidayPay = val
   },
   SET_STARTEDAT (state, val) {
     state.startedAt = val

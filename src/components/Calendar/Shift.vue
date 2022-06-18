@@ -21,51 +21,85 @@ import { computed } from 'vue'
 const props = defineProps({
   uuid: String,
   name: String,
+  isHolidayPay: Boolean,
+  isTaxed: Boolean,
   startedAt: Object,
   finishedAt: Object
 })
 
 const emit = defineEmits(['salary', 'delete'])
 const { salaryT } = mapState('user')
-console.log(salaryT.value)
 
-const salary = computed(() => {
+const workTime = computed(() => {
+  let usualHours = 0
+  let tonightHours = 0
+  let nightHours = 0
+  let saturdayHours = 0
+  let sundayHours = 0
+
   let start = props.startedAt
   const end = props.finishedAt
-  const salaryInfo = salaryT.value
 
-  let amount = 0
   while (start.diff(end) < 0) {
-    let diff = start.diff(end, 'h', true)
-    if (start.minute() !== 0) {
-      diff = -(start.minute() / 60)
-    }
     const weekday = start.weekday()
     const hour = start.hour()
-    if (diff < 0 && diff > -1) {
-      amount += salaryInfo.amount * Math.abs(diff)
-    } else {
-      amount += salaryInfo.amount
+    let diff = start.diff(end, 'h', true)
+    if (start.minute() !== 0) {
+      diff = -(Math.round((1 - (start.minute() / 60)) * 100) / 100)
+      console.log('diffTime', diff)
     }
+    let exponent = 1
+    if (diff < 0 && diff > -1) {
+      exponent = Math.abs(diff)
+    }
+
+    usualHours += exponent
 
     if (weekday === 0) {
-      amount += salaryInfo.amount * salaryInfo.sundayPay
+      sundayHours += exponent
+    }
+    if (weekday === 6 && hour >= 13) {
+      saturdayHours += exponent
+    } else if (hour >= 18) {
+      tonightHours += exponent
     }
 
-    if (weekday === 6 && salaryInfo.saturdayTonightPay && hour >= 13) {
-      amount += salaryInfo.saturdayTonightPay
-    } else if (salaryInfo.isTonightPay && hour >= 18) {
-      amount += salaryInfo.tonightPay
+    if (hour < 6) {
+      nightHours += exponent
     }
 
-    if (salaryInfo.isNightPay && hour < 6) {
-      amount += salaryInfo.nightPay
-    }
     if (start.minute() !== 0) {
       start = start.add(60 - start.minute(), 'm')
     } else {
       start = start.add(1, 'h')
     }
+  }
+
+  return { usualHours, tonightHours, nightHours, saturdayHours, sundayHours }
+})
+console.table(props.startedAt.format('YYYY MM DD'))
+console.table(workTime.value)
+const salary = computed(() => {
+  const salaryInfo = salaryT.value
+
+  const { usualHours, tonightHours, nightHours, saturdayHours, sundayHours } = workTime.value
+
+  let amount = 0
+  console.log(salaryInfo.amount)
+  console.log(salaryInfo.tonightPay)
+  console.log(salaryInfo.nightPay)
+  console.log(salaryInfo.saturdayTonightPay)
+  amount += usualHours * salaryInfo.amount
+  amount += tonightHours * salaryInfo.tonightPay
+  amount += nightHours * salaryInfo.nightPay
+  amount += saturdayHours * salaryInfo.saturdayTonightPay
+  amount += sundayHours * (salaryInfo.amount * salaryInfo.sundayPay)
+
+  if (props.isHolidayPay) {
+    amount += amount * salaryInfo.holidayPay
+  }
+  if (props.isTaxed) {
+    amount = amount - (amount * salaryInfo.tvak) - (amount * salaryInfo.evak) - (amount * salaryInfo.tax)
   }
   return amount
 })
