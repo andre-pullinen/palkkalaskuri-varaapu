@@ -296,43 +296,6 @@ if (job) {
     margin: 0 auto;
   }
 }
-.job {
-  position: relative;
-  background-color: #28A745;
-  color: #fdfdfd;
-  border-radius: 5px;
-  padding: 1.2em 0.3em;
-  max-width: 70%;
-  margin: 0 auto;
-  font-size: 0.8em;
-  &__delete, &__edit {
-    font-size: 1.2em;
-    position: absolute;
-    top: 3px;
-  }
-  &__delete {
-    color: red;
-    right: 5px;
-    cursor: pointer;
-  }
-  &__edit {
-    color: blue;
-    left: 5px;
-    cursor: pointer;
-  }
-  &__title, &__time, &__salary {
-    margin: 0;
-  }
-  &__title {
-    font-weight: 600;
-  }
-  &__time {
-    font-weight: 300;
-  }
-  &__salary {
-    padding: 0.3em 0;
-  }
-}
 .blue {
   background-color: #D3FCFF;
 }

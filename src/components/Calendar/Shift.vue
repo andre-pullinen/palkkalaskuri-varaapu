@@ -1,6 +1,6 @@
 <template>
   <div class="job">
-    <span class="job__delete" @click="emit('delete')"><vue-feather type="x" size="0.8em"></vue-feather></span>
+    <span class="job__delete" @click="emit('delete', uuid)"><vue-feather type="x" size="0.8em"></vue-feather></span>
     <span class="job__edit"><vue-feather type="edit" size="0.8em"></vue-feather></span>
     <p class="job__title">{{ name }}</p>
     <p class="job__time">{{ startedAt.format('HH.mm') }} -
