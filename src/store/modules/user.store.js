@@ -116,6 +116,55 @@ const actions = {
     commit('SETUP')
   },
   addJob ({ commit }, payload) {
+    let usualHours = 0
+    let tonightHours = 0
+    let nightHours = 0
+    let saturdayHours = 0
+    let sundayHours = 0
+
+    let start = payload.startedAt
+    const end = payload.finishedAt
+
+    while (start.diff(end) < 0) {
+      const weekday = start.weekday()
+      const hour = start.hour()
+      let diff = start.diff(end, 'h', true)
+      if (start.minute() !== 0) {
+        diff = -(Math.round((1 - (start.minute() / 60)) * 100) / 100)
+      }
+      let exponent = 1
+      if (diff < 0 && diff > -1) {
+        exponent = Math.abs(diff)
+      }
+
+      usualHours += exponent
+
+      if (weekday === 6) {
+        sundayHours += exponent
+      }
+      if (weekday === 5 && hour >= 13) {
+        saturdayHours += exponent
+      } else if (hour >= 18) {
+        tonightHours += exponent
+      }
+
+      if (hour < 6) {
+        nightHours += exponent
+      }
+
+      if (start.minute() !== 0) {
+        start = start.add(60 - start.minute(), 'm')
+      } else {
+        start = start.add(1, 'h')
+      }
+    }
+
+    payload.workTime = { usualHours, tonightHours, nightHours, saturdayHours, sundayHours }
+    payload.startedTimeAt = payload.startedAt.format('HH.mm')
+    payload.finishedTimeAt = payload.finishedAt.format('HH.mm')
+    const n = new Date(0, 0)
+    n.setSeconds(+Math.abs(payload.startedAt.diff(payload.finishedAt, 'hour', true)) * 60 * 60)
+    payload.workHours = n.toTimeString().slice(0, 5)
     commit('ADD_JOB', payload)
     commit('INCREASE_PLACE', payload.name)
   },

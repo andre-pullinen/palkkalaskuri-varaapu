@@ -3,9 +3,9 @@
     <span class="job__delete" @click="emit('delete', uuid)"><vue-feather type="x" size="0.8em"></vue-feather></span>
     <span class="job__edit"><vue-feather type="edit" size="0.8em"></vue-feather></span>
     <p class="job__title">{{ name }}</p>
-    <p class="job__time">{{ startedAt.format('HH.mm') }} -
-      {{ finishedAt.format('HH.mm') }}
-      ({{ humanizeTime(Math.abs(startedAt.diff(finishedAt, 'hour', true))) }})</p>
+    <p class="job__time">{{ startedTimeAt }} -
+      {{ finishedTimeAt }}
+      ({{ workHours }})</p>
     <p class="job__salary">
       {{ humanizeSalary(salary) }} €
     </p>
@@ -25,14 +25,21 @@ const props = defineProps({
   name: String,
   isHolidayPay: Boolean,
   isTaxed: Boolean,
+  workTime: Object,
   startedAt: Object,
-  finishedAt: Object
+  finishedAt: Object,
+  startedTimeAt: String,
+  finishedTimeAt: String,
+  workHours: String
 })
 
 const emit = defineEmits(['shiftInfo', 'delete'])
 const { salaryT } = mapState('user')
 
 const workTime = computed(() => {
+  if (props.workTime) {
+    return props.workTime
+  }
   let usualHours = 0
   let tonightHours = 0
   let nightHours = 0
@@ -57,10 +64,10 @@ const workTime = computed(() => {
 
     usualHours += exponent
 
-    if (weekday === 0) {
+    if (weekday === 6) {
       sundayHours += exponent
     }
-    if (weekday === 6 && hour >= 13) {
+    if (weekday === 5 && hour >= 13) {
       saturdayHours += exponent
     } else if (hour >= 18) {
       tonightHours += exponent
@@ -101,12 +108,6 @@ const salary = computed(() => {
   }
   return amount
 })
-
-function humanizeTime (hours) {
-  const n = new Date(0, 0)
-  n.setSeconds(+hours * 60 * 60)
-  return n.toTimeString().slice(0, 5)
-}
 
 function humanizeSalary (amount) {
   return Math.round(amount * 100) / 100

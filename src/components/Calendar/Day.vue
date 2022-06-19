@@ -7,6 +7,10 @@
            :name="shift.name"
            :key="key"
            :uuid="key"
+           :work-time="shift.workTime"
+           :finished-time-at="shift.finishedTimeAt"
+           :started-time-at="shift.startedTimeAt"
+           :work-hours="shift.workHours"
            @delete="deleteJob"
     />
     <span class="day__add-job" @click="addShift"><vue-feather type="plus" size="1em"></vue-feather></span>
@@ -39,13 +43,12 @@ function addShift () {
 
 <style lang="scss">
 .day {
-  display: inline-block;
   position: relative;
-  width: calc(80% / 7);
+  flex-grow: 1;
+  flex-basis: 0;
   height: 100px;
   padding-top: 2em;
-  background: rgba(213, 213, 213, 0.3);
-  vertical-align: top;
+  //background: rgba(213, 213, 213, 0.3);
 &__marker {
    position: absolute;
    top: 5px;

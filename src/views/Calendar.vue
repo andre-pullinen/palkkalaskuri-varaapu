@@ -2,20 +2,7 @@
   <div class="calendar">
     <input v-model="year" type="number">
     <input v-model="month" type="number">
-    <div v-for="(week, key) in weeks" :key="key" :class="'week ' + (Math.floor((week.diffOfPeriod + 5) / 2) % 2 ? 'blue' : 'pink')">
-      <div class="week__number">#{{ week.weekNumber }}</div>
-      <div class="week__days">
-        <day v-for="(day, key) in week.days"
-             :date="dayjs(day.date).format('YYYY-MM-DD')"
-             :shifts="day.job"
-             :day-of-month="day.dayOfMonth"
-             :key="key"
-        />
-      </div>
-      <div class="week__salary">
-        {{ getSalaryForWeek(week) }} €
-      </div>
-    </div>
+    <Periods v-for="(period, key, i) in periods" :weeks="period" :key="key" :class="i % 2 === 0 ? 'pink' : 'blue'" />
     <Modal
       v-model="isShow"
       :close="closeModal"
@@ -47,10 +34,10 @@
 </template>
 
 <script setup>
-import { computed, inject, ref } from 'vue'
+import { computed, inject, reactive, ref } from 'vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import { useStore } from 'vuex'
-import Day from '@/components/Calendar/Day'
+import Periods from '@/components/Calendar/Periods'
 
 const dayjs = inject('dayJS')
 const event = inject('event')
@@ -98,23 +85,8 @@ function saveJob () {
     startedAt: workFullTime.value.startDay,
     finishedAt: workFullTime.value.finishDay
   }
-  console.log(payload)
   store.dispatch('user/addJob', payload)
   updateCalendar()
-}
-
-function getSalaryForWeek (week) {
-  let salary = 0
-  week.days.forEach((day) => {
-    if (day.job !== null) {
-      for (const [key, job] of Object.entries(day.job)) {
-        console.log(key)
-        salary += store.getters['user/getSalaryForJob'](job, false)
-      }
-    }
-  })
-
-  return Math.round(salary * 100) / 100
 }
 
 function closeModal () {
@@ -148,8 +120,6 @@ function createDaysForPreviousMonth (year, month, currentMonthDays) {
 
   // Cover first day of the month being sunday (firstDayOfTheMonthWeekday === 0)
   const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday
-    ? firstDayOfTheMonthWeekday - 1
-    : 6
 
   const previousMonthLastMondayDayOfMonth = dayjs(currentMonthDays[0].date)
     .subtract(visibleNumberOfDaysFromPreviousMonth, 'day')
@@ -174,14 +144,11 @@ function createDaysForNextMonth (year, month, currentMonthDays) {
   const lastDayOfTheMonthWeekday = getWeekday(
     `${year}-${month}-${currentMonthDays.length}`
   )
-
+  console.log('currentMonthDays.length', currentMonthDays.length)
+  console.log('lastDayOfTheMonthWeekday', lastDayOfTheMonthWeekday)
   const nextMonth = dayjs(`${year}-${month}-01`).add(1, 'month')
 
-  const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday
-    ? 7 - lastDayOfTheMonthWeekday
-    : lastDayOfTheMonthWeekday
-
-  return [...Array(visibleNumberOfDaysFromNextMonth)].map((day, index) => {
+  return [...Array(6 - lastDayOfTheMonthWeekday)].map((day, index) => {
     const date = dayjs(
       `${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`
     ).format('YYYY-MM-DD')
@@ -193,11 +160,13 @@ function createDaysForNextMonth (year, month, currentMonthDays) {
     }
   })
 }
+// eslint-disable-next-line no-unused-vars
+const periods = reactive({})
 const weeks = ref([])
 let week = { days: [], weekNumber: 0 }
 
 const currentYear = ref(2022)
-const currentMonth = ref(6)
+const currentMonth = ref(8)
 const year = computed({
   get: () => currentYear.value,
   set: val => {
@@ -214,6 +183,7 @@ const month = computed({
 })
 
 function updateCalendar () {
+  week = { days: [], weekNumber: 0 }
   console.log('updateCalendar')
 
   const current = createDaysForCurrentMonth(
@@ -223,25 +193,39 @@ function updateCalendar () {
   const daysInMouth = [...createDaysForPreviousMonth(year.value, month.value, current),
     ...current,
     ...createDaysForNextMonth(year.value, month.value, current)]
+  console.log(createDaysForNextMonth(year.value, month.value, current))
 
+  const periodStarted = dayjs(store.state.user.startedAt).hour(0).minute(0).second(0)
   weeks.value.splice(0, weeks.value.length)
+  for (const key in periods) {
+    delete periods[key]
+  }
+  console.log('daysInMouth', daysInMouth.length)
   daysInMouth.map((day, index) => {
     week.days.push(day)
+    console.log('(index + 1) % 7', (index + 1) % 7)
+    console.log('day.date', day.date)
     if ((index + 1) % 7 === 0) {
-      console.log(day)
-      week.weekNumber = dayjs(day.date).week()
-      week.diffOfPeriod = Math.ceil(dayjs(day.date).diff(dayjs(store.state.user.startedAt), 'week', true))
+      const dayOfWeek = dayjs(day.date)
+      console.log('dayOfWeek', dayOfWeek)
+      const diffInW = Math.floor(dayOfWeek.diff(periodStarted, 'week', true)) + 6
+      const newPeriodStarted = dayOfWeek.weekday(diffInW % 2 === 0 ? 0 : -7)
+      const key = `${newPeriodStarted.format('YYYY-MM-DD')}/${newPeriodStarted.weekday(13).format('YYYY-MM-DD')}`
+      week.weekNumber = dayOfWeek.week()
+      week.diffOfPeriod = Math.ceil(dayOfWeek.diff(dayjs(store.state.user.startedAt), 'week', true))
       weeks.value.push(week)
+
+      if (!periods[key]) {
+        periods[key] = []
+      }
+      periods[key].push(week)
+
       week = { days: [], weekNumber: 0 }
     }
   })
 }
 
 updateCalendar()
-
-console.log(weeks.value)
-console.table(store.getters['user/getJobHistory']())
-console.table(store.getters['user/getJobPlaces']())
 </script>
 
 <style scoped lang="scss">

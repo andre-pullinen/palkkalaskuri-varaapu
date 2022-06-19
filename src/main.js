@@ -11,6 +11,7 @@ import 'vue3-simple-typeahead/dist/vue3-simple-typeahead.css' // Optional defaul
 import '@vuepic/vue-datepicker/dist/main.css'
 import 'vue-universal-modal/dist/index.css'
 
+import fiLocale from 'dayjs/locale/fi'
 import weekday from 'dayjs/plugin/weekday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import duration from 'dayjs/plugin/duration'
@@ -18,6 +19,7 @@ import duration from 'dayjs/plugin/duration'
 dayjs.extend(weekday)
 dayjs.extend(weekOfYear)
 dayjs.extend(duration)
+dayjs.locale(fiLocale)
 
 createApp(App)
   .use(store)
