@@ -120,6 +120,7 @@ function getSalaryForWeek (week) {
 function closeModal () {
   isShow.value = false
 }
+
 function getNumberOfDaysInMonth (year, month) {
   return dayjs(`${year}-${month}-01`).daysInMonth()
 }
@@ -241,40 +242,9 @@ updateCalendar()
 console.log(weeks.value)
 console.table(store.getters['user/getJobHistory']())
 console.table(store.getters['user/getJobPlaces']())
-const job = store.getters['user/getJobByDate']('2022-06-25')
-if (job) {
-  console.log(store.getters['user/getSalaryForJob'](job))
-}
-
 </script>
 
 <style scoped lang="scss">
-.day {
-  display: inline-block;
-  position: relative;
-  width: calc(80% / 7);
-  height: 100px;
-  padding-top: 2em;
-  background: rgba(213, 213, 213, 0.3);
-  vertical-align: top;
-  &__marker {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    font-size: 1.2em;
-  }
-  &__add-job {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: #007BFF;
-    color: white;
-    width: 1.265em;
-    height: 1.265em;
-    line-height: 1.55em;
-    border-radius: 5px;
-  }
-}
 .week {
   position: relative;
   &__number {

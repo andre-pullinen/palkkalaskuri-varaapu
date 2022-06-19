@@ -15,7 +15,9 @@
 <script setup>
 import VueFeather from 'vue-feather'
 import { mapState } from '@/map'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
+
+const event = inject('event')
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
@@ -27,7 +29,7 @@ const props = defineProps({
   finishedAt: Object
 })
 
-const emit = defineEmits(['salary', 'delete'])
+const emit = defineEmits(['shiftInfo', 'delete'])
 const { salaryT } = mapState('user')
 
 const workTime = computed(() => {
@@ -85,10 +87,6 @@ const salary = computed(() => {
   const { usualHours, tonightHours, nightHours, saturdayHours, sundayHours } = workTime.value
 
   let amount = 0
-  console.log(salaryInfo.amount)
-  console.log(salaryInfo.tonightPay)
-  console.log(salaryInfo.nightPay)
-  console.log(salaryInfo.saturdayTonightPay)
   amount += usualHours * salaryInfo.amount
   amount += tonightHours * salaryInfo.tonightPay
   amount += nightHours * salaryInfo.nightPay
@@ -114,7 +112,7 @@ function humanizeSalary (amount) {
   return Math.round(amount * 100) / 100
 }
 
-emit('salary', salary)
+event.trigger('shift.salary', { salary, workTime })
 </script>
 
 <style lang="scss">

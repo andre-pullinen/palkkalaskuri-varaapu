@@ -35,7 +35,6 @@ function deleteJob (uuid) {
 function addShift () {
   event.trigger('day.addShift', props.date)
 }
-
 </script>
 
 <style lang="scss">
