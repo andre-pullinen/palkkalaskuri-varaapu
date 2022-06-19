@@ -144,8 +144,6 @@ function createDaysForNextMonth (year, month, currentMonthDays) {
   const lastDayOfTheMonthWeekday = getWeekday(
     `${year}-${month}-${currentMonthDays.length}`
   )
-  console.log('currentMonthDays.length', currentMonthDays.length)
-  console.log('lastDayOfTheMonthWeekday', lastDayOfTheMonthWeekday)
   const nextMonth = dayjs(`${year}-${month}-01`).add(1, 'month')
 
   return [...Array(6 - lastDayOfTheMonthWeekday)].map((day, index) => {
@@ -200,14 +198,10 @@ function updateCalendar () {
   for (const key in periods) {
     delete periods[key]
   }
-  console.log('daysInMouth', daysInMouth.length)
   daysInMouth.map((day, index) => {
     week.days.push(day)
-    console.log('(index + 1) % 7', (index + 1) % 7)
-    console.log('day.date', day.date)
     if ((index + 1) % 7 === 0) {
       const dayOfWeek = dayjs(day.date)
-      console.log('dayOfWeek', dayOfWeek)
       const diffInW = Math.floor(dayOfWeek.diff(periodStarted, 'week', true)) + 6
       const newPeriodStarted = dayOfWeek.weekday(diffInW % 2 === 0 ? 0 : -7)
       const key = `${newPeriodStarted.format('YYYY-MM-DD')}/${newPeriodStarted.weekday(13).format('YYYY-MM-DD')}`
