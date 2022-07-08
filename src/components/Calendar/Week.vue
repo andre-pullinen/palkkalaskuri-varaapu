@@ -6,6 +6,7 @@
            :date="dayjs(day.date).format('YYYY-MM-DD')"
            :shifts="day.job"
            :day-of-month="day.dayOfMonth"
+           :is-current-month="day.isCurrentMonth"
            :key="key"
       />
     </div>
@@ -41,6 +42,7 @@ const props = defineProps({
     display: flex;
     flex-grow: 1;
     padding: 0 2em;
+    justify-content: center;
   }
 }
 </style>

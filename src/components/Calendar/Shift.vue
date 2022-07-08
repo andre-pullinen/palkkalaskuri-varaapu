@@ -1,7 +1,6 @@
 <template>
   <div class="job">
     <span class="job__delete" @click="emit('delete', uuid)"><vue-feather type="x" size="0.8em"></vue-feather></span>
-    <span class="job__edit"><vue-feather type="edit" size="0.8em"></vue-feather></span>
     <p class="job__title">{{ name }}</p>
     <p class="job__time">{{ startedTimeAt }} -
       {{ finishedTimeAt }}
@@ -15,9 +14,7 @@
 <script setup>
 import VueFeather from 'vue-feather'
 import { mapState } from '@/map'
-import { computed, inject } from 'vue'
-
-const event = inject('event')
+import { computed } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
@@ -25,12 +22,14 @@ const props = defineProps({
   name: String,
   isHolidayPay: Boolean,
   isTaxed: Boolean,
+  isLunch: Boolean,
   workTime: Object,
   startedAt: Object,
   finishedAt: Object,
   startedTimeAt: String,
   finishedTimeAt: String,
-  workHours: String
+  workHours: String,
+  lunchTime: Number
 })
 
 const emit = defineEmits(['shiftInfo', 'delete'])
@@ -38,7 +37,11 @@ const { salaryT } = mapState('user')
 
 const workTime = computed(() => {
   if (props.workTime) {
-    return props.workTime
+    const work = { ...props.workTime }
+    if (props.isLunch) {
+      work.usualHours -= (props.lunchTime / 60)
+    }
+    return work
   }
   let usualHours = 0
   let tonightHours = 0
@@ -55,7 +58,6 @@ const workTime = computed(() => {
     let diff = start.diff(end, 'h', true)
     if (start.minute() !== 0) {
       diff = -(Math.round((1 - (start.minute() / 60)) * 100) / 100)
-      console.log('diffTime', diff)
     }
     let exponent = 1
     if (diff < 0 && diff > -1) {
@@ -86,8 +88,6 @@ const workTime = computed(() => {
 
   return { usualHours, tonightHours, nightHours, saturdayHours, sundayHours }
 })
-console.table(props.startedAt.format('YYYY MM DD'))
-console.table(workTime.value)
 const salary = computed(() => {
   const salaryInfo = salaryT.value
 
@@ -112,8 +112,6 @@ const salary = computed(() => {
 function humanizeSalary (amount) {
   return Math.round(amount * 100) / 100
 }
-
-event.trigger('shift.salary', { salary, workTime })
 </script>
 
 <style lang="scss">
@@ -123,7 +121,7 @@ event.trigger('shift.salary', { salary, workTime })
   color: #fdfdfd;
   border-radius: 5px;
   padding: 1.2em 0.3em;
-  max-width: 70%;
+  max-width: 100%;
   margin: 0 auto;
   font-size: 0.8em;
   &__delete, &__edit {

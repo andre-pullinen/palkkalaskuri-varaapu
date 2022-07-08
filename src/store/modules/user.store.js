@@ -1,6 +1,8 @@
 /* user.store.js */
 
 import dayjs from 'dayjs'
+// eslint-disable-next-line no-unused-vars
+import Holidays from 'date-holidays'
 
 const initialState = () => ({
   interval: 14,
@@ -124,8 +126,16 @@ const actions = {
 
     let start = payload.startedAt
     const end = payload.finishedAt
+    const hd = new Holidays('fi')
 
     while (start.diff(end) < 0) {
+      const holidayInfo = hd.isHoliday(start)
+      let isPublicHoliday = false
+      let isBankHoliday = false
+      if (holidayInfo) {
+        isPublicHoliday = hd.isHoliday(start).some(e => e.type === 'public')
+        isBankHoliday = hd.isHoliday(start).some(e => e.type === 'bank')
+      }
       const weekday = start.weekday()
       const hour = start.hour()
       let diff = start.diff(end, 'h', true)
@@ -139,16 +149,16 @@ const actions = {
 
       usualHours += exponent
 
-      if (weekday === 6) {
+      if (weekday === 6 || isPublicHoliday) {
         sundayHours += exponent
       }
-      if (weekday === 5 && hour >= 13) {
+      if ((weekday === 5 && hour >= 13) || (isBankHoliday && hour >= 18)) {
         saturdayHours += exponent
       } else if (hour >= 18) {
         tonightHours += exponent
       }
 
-      if (hour < 6) {
+      if (hour < 6 && !isPublicHoliday) {
         nightHours += exponent
       }
 
@@ -163,10 +173,16 @@ const actions = {
     payload.startedTimeAt = payload.startedAt.format('HH.mm')
     payload.finishedTimeAt = payload.finishedAt.format('HH.mm')
     const n = new Date(0, 0)
-    n.setSeconds(+Math.abs(payload.startedAt.diff(payload.finishedAt, 'hour', true)) * 60 * 60)
+    let SAt = payload.startedAt.clone()
+    if (payload.isLunch) {
+      SAt = SAt.add(payload.lunchTime, 'minute')
+    }
+    n.setSeconds(+Math.abs(SAt.diff(payload.finishedAt, 'hour', true)) * 60 * 60)
     payload.workHours = n.toTimeString().slice(0, 5)
     commit('ADD_JOB', payload)
-    commit('INCREASE_PLACE', payload.name)
+    if (payload.name.trim() !== '') {
+      commit('INCREASE_PLACE', payload.name.trim())
+    }
   },
   removeJob ({ commit }, payload) {
     commit('REMOVE_JOB', payload)

@@ -1,30 +1,50 @@
 import Home from '@/views/Home'
-import About from '@/views/About'
-import Calendar from '@/views/Calendar'
+import LangParent from '@/views/LangParent'
+import i18n from '@/i18n'
+const Calendar = () => import('@/views/Calendar')
+const Settings = () => import('@/views/Settings')
+const supportedLangs = ['fi', 'en']
 
-export default [
-  {
-    path: '/about',
-    name: 'about',
-    component: About,
-    meta: {
-      // middleware: [guest]
+export default [{
+  path: '/:lang(en|fi)?',
+  component: LangParent,
+  beforeEnter (to, from, next) {
+    const lang = to.params.lang
+    if (supportedLangs.includes(lang)) {
+      if (i18n.locale !== lang) {
+        i18n.locale = lang
+      }
+      return next()
     }
+    return next(i18n.locale)
   },
-  {
-    path: '/',
-    name: 'home',
-    component: Home,
-    meta: {
-      // middleware: [auth]
+  children: [
+    {
+      path: '',
+      name: 'home',
+      component: Home,
+      meta: {
+        name: 'Koti'
+        // middleware: [auth]
+      }
+    },
+    {
+      path: 'calendar',
+      name: 'calendar',
+      component: Calendar,
+      meta: {
+        name: 'Kalenteri'
+        // middleware: [auth]
+      }
+    },
+    {
+      path: 'settings',
+      name: 'settings',
+      component: Settings,
+      meta: {
+        name: 'Asetukset'
+        // middleware: [auth]
+      }
     }
-  },
-  {
-    path: '/calendar',
-    name: 'calendar',
-    component: Calendar,
-    meta: {
-      // middleware: [auth]
-    }
-  }
-]
+  ]
+}]

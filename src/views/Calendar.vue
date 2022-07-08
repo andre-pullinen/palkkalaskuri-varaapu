@@ -1,33 +1,39 @@
 <template>
   <div class="calendar">
-    <input v-model="year" type="number">
-    <input v-model="month" type="number">
+    <div class="calendar__date-picker">
+      <year-picker v-model="year" />
+      <month-picker v-model="month" />
+    </div>
     <Periods v-for="(period, key, i) in periods" :weeks="period" :key="key" :class="i % 2 === 0 ? 'pink' : 'blue'" />
     <Modal
       v-model="isShow"
       :close="closeModal"
     >
       <div class="modal">
-        <div>
-          <h3>{{ workDay.format('YYYY MMM D') }}</h3>
+        <div class="add-shift">
+          <h3 class="add-shift__title">{{ workDay.format('DD.MM.YYYY') }}</h3>
           <vue3-simple-typeahead
             id="typeahead_id"
-            placeholder="Start writing..."
+            class="add-shift__input"
+            placeholder="Paikkasi..."
             :items="store.getters['user/getJobPlaces']()"
             :minInputLength="1"
             @onInput="onInputEventHandler"
             @selectItem="selectItemEventHandler"
           />
-          <Datepicker v-model="workStarted" time-picker />
-          <Datepicker v-model="workFinished" time-picker />
-          {{ workFullTime }}
+          <Datepicker class="add-shift__input" v-model="workStarted" time-picker />
+          <Datepicker class="add-shift__input" v-model="workFinished" time-picker />
+          <checkbox v-model="isLunch">Ruokataukko</checkbox>
+          <input class="add-shift__input add-shift__input-styled" type="number" v-model="lunchTime" v-if="isLunch">
         </div>
-        <button @click="saveJob">
-          save
-        </button>
-        <button @click="closeModal">
-          close
-        </button>
+        <div class="add-shift__buttons">
+          <button class="add-shift__button" @click="saveJob">
+            save
+          </button>
+          <button class="add-shift__button" @click="closeModal">
+            close
+          </button>
+        </div>
       </div>
     </Modal>
   </div>
@@ -37,34 +43,42 @@
 import { computed, inject, reactive, ref } from 'vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import { useStore } from 'vuex'
+// import WeekDays from '@/components/Calendar/WeekDays'
 import Periods from '@/components/Calendar/Periods'
+import Checkbox from '@/components/Base/Checkbox'
+import MonthPicker from '@/components/Base/MonthPicker'
+import YearPicker from '@/components/Base/YearPicker'
+import { event } from 'vue-gtag'
 
 const dayjs = inject('dayJS')
-const event = inject('event')
+const eventBus = inject('event')
 
-event.on('day.addShift', showModal)
+eventBus.on('day.addShift', showModal)
 
 const store = useStore()
+const now = dayjs()
 
 const isShow = ref(false)
+const isLunch = ref(false)
+const lunchTime = ref(30)
 const workName = ref('')
 const workStarted = ref({
-  hours: dayjs().hour(),
+  hours: now.hour(),
   minutes: 0
 })
 const workFinished = ref({
-  hours: dayjs().add(6, 'h').hour(),
+  hours: now.add(6, 'h').hour(),
   minutes: 0
 })
-const workDay = ref(dayjs())
+const workDay = ref(now)
 const workFullTime = computed(() => {
-  const startDay = dayjs(workDay.value).hour(workStarted.value.hours).minute(workStarted.value.minutes)
-  let finishDay = dayjs(workDay.value).hour(workFinished.value.hours).minute(workFinished.value.minutes)
+  const startDay = workDay.value.hour(workStarted.value.hours).minute(workStarted.value.minutes)
+  let finishDay = workDay.value.hour(workFinished.value.hours).minute(workFinished.value.minutes)
   if (workStarted.value.hours > workFinished.value.hours) {
     finishDay = finishDay.add(1, 'd')
   }
   return { startDay, finishDay }
-}, 'h')
+})
 // eslint-disable-next-line no-unused-vars
 function showModal (date) {
   workDay.value = dayjs(date)
@@ -83,8 +97,15 @@ function saveJob () {
     name: workName.value,
     date: workDay.value,
     startedAt: workFullTime.value.startDay,
-    finishedAt: workFullTime.value.finishDay
+    finishedAt: workFullTime.value.finishDay,
+    isLunch: isLunch.value,
+    lunchTime: lunchTime.value
   }
+  event('shift', {
+    event_category: 'create',
+    event_label: payload.date,
+    value: payload.date
+  })
   store.dispatch('user/addJob', payload)
   updateCalendar()
 }
@@ -164,7 +185,7 @@ const weeks = ref([])
 let week = { days: [], weekNumber: 0 }
 
 const currentYear = ref(2022)
-const currentMonth = ref(8)
+const currentMonth = ref(6)
 const year = computed({
   get: () => currentYear.value,
   set: val => {
@@ -222,20 +243,120 @@ function updateCalendar () {
 updateCalendar()
 </script>
 
-<style scoped lang="scss">
-.week {
-  position: relative;
-  &__number {
-    position: absolute;
-    font-size: 48px;
-    font-weight: 300;
-    color: #5f5f5f;
-    top: 50%;
-    transform: translateY(-50%)
+<style lang="scss">
+.calendar {
+  &__date-picker {
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+    justify-content: center;
   }
-  &__days {
-    width: 80%;
-    margin: 0 auto;
+}
+.simple-typeahead {
+  &-input {
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 0.8em;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color .2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    &:hover, &:focus-visible, &:focus {
+      outline:none;
+      border-color: #aaaeb7;
+    }
+  }
+}
+.add-shift {
+  &__title {
+    margin: 0;
+  }
+  &__input-styled {
+    font-size: 0.8em;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color .2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    &:hover, &:focus-visible, &:focus {
+      outline:none;
+      border-color: #aaaeb7;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  &__checkbox {
+    & input[type='checkbox'] {
+      /* Add if not using autoprefixer */
+      -webkit-appearance: none;
+      /* Remove most all native input styles */
+      appearance: none;
+      /* For iOS < 15 */
+      background-color: rebeccapurple;
+      /* Not removed via appearance */
+      margin: 0;
+
+      font: inherit;
+      color: currentColor;
+      width: 1.15em;
+      height: 1.15em;
+      border: 0.15em solid currentColor;
+      border-radius: 0.15em;
+      transform: translateY(-0.075em);
+
+      display: grid;
+      place-content: center;
+      &::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        transform: scale(0);
+        transform-origin: bottom left;
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em var(--form-control-color);
+        /* Windows High Contrast Mode */
+        background-color: black;
+      }
+      &:checked::before {
+        transform: scale(1);
+      }
+      &:focus {
+        outline: max(2px, 0.15em) solid currentColor;
+        outline-offset: max(2px, 0.15em);
+      }
+    }
+  }
+  &__input {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 10px 0;
+  }
+  &__buttons {
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+    padding-top: 10px;
+    display: flex;
+  }
+  &__button {
+    background: none;
+    flex-grow: 1;
+    flex-basis: 0;
+    font-size: 0.8em;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    transition: border-color .2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    &:first-child {
+      margin-right: 5px;
+    }
+    &:last-child {
+      margin-left: 5px;
+    }
+    &:hover, &:focus-visible, &:focus {
+      outline:none;
+      border-color: #aaaeb7;
+    }
   }
 }
 .blue {

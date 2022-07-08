@@ -992,6 +992,62 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
+"@intlify/core-base@9.1.10":
+  version "9.1.10"
+  resolved "https://registry.yarnpkg.com/@intlify/core-base/-/core-base-9.1.10.tgz#cbd3099f375c789a1b974f3ea79b6efb8bb148fa"
+  integrity sha512-So9CNUavB/IsZ+zBmk2Cv6McQp6vc2wbGi1S0XQmJ8Vz+UFcNn9MFXAe9gY67PreIHrbLsLxDD0cwo1qsxM1Nw==
+  dependencies:
+    "@intlify/devtools-if" "9.1.10"
+    "@intlify/message-compiler" "9.1.10"
+    "@intlify/message-resolver" "9.1.10"
+    "@intlify/runtime" "9.1.10"
+    "@intlify/shared" "9.1.10"
+    "@intlify/vue-devtools" "9.1.10"
+
+"@intlify/devtools-if@9.1.10":
+  version "9.1.10"
+  resolved "https://registry.yarnpkg.com/@intlify/devtools-if/-/devtools-if-9.1.10.tgz#8704852a4fa547df43df71a16b1cc4b27e758aa3"
+  integrity sha512-SHaKoYu6sog3+Q8js1y3oXLywuogbH1sKuc7NSYkN3GElvXSBaMoCzW+we0ZSFqj/6c7vTNLg9nQ6rxhKqYwnQ==
+  dependencies:
+    "@intlify/shared" "9.1.10"
+
+"@intlify/message-compiler@9.1.10":
+  version "9.1.10"
+  resolved "https://registry.yarnpkg.com/@intlify/message-compiler/-/message-compiler-9.1.10.tgz#271f5e1cb65f3cec4b1fb243e50615747613f4be"
+  integrity sha512-+JiJpXff/XTb0EadYwdxOyRTB0hXNd4n1HaJ/a4yuV960uRmPXaklJsedW0LNdcptd/hYUZtCkI7Lc9J5C1gxg==
+  dependencies:
+    "@intlify/message-resolver" "9.1.10"
+    "@intlify/shared" "9.1.10"
+    source-map "0.6.1"
+
+"@intlify/message-resolver@9.1.10":
+  version "9.1.10"
+  resolved "https://registry.yarnpkg.com/@intlify/message-resolver/-/message-resolver-9.1.10.tgz#fb1dabdec2e29942df26f47e19444278a6e2f070"
+  integrity sha512-5YixMG/M05m0cn9+gOzd4EZQTFRUu8RGhzxJbR1DWN21x/Z3bJ8QpDYj6hC4FwBj5uKsRfKpJQ3Xqg98KWoA+w==
+
+"@intlify/runtime@9.1.10":
+  version "9.1.10"
+  resolved "https://registry.yarnpkg.com/@intlify/runtime/-/runtime-9.1.10.tgz#70582a16810f68953d1cbf7183c8107a9137b580"
+  integrity sha512-7QsuByNzpe3Gfmhwq6hzgXcMPpxz8Zxb/XFI6s9lQdPLPe5Lgw4U1ovRPZTOs6Y2hwitR3j/HD8BJNGWpJnOFA==
+  dependencies:
+    "@intlify/message-compiler" "9.1.10"
+    "@intlify/message-resolver" "9.1.10"
+    "@intlify/shared" "9.1.10"
+
+"@intlify/shared@9.1.10":
+  version "9.1.10"
+  resolved "https://registry.yarnpkg.com/@intlify/shared/-/shared-9.1.10.tgz#9e2527276b43ae3f354c4015eb04f855d9d7a707"
+  integrity sha512-Om54xJeo1Vw+K1+wHYyXngE8cAbrxZHpWjYzMR9wCkqbhGtRV5VLhVc214Ze2YatPrWlS2WSMOWXR8JktX/IgA==
+
+"@intlify/vue-devtools@9.1.10":
+  version "9.1.10"
+  resolved "https://registry.yarnpkg.com/@intlify/vue-devtools/-/vue-devtools-9.1.10.tgz#c62535d86742bcd16593806a4fcae49f6fc8ae6d"
+  integrity sha512-5l3qYARVbkWAkagLu1XbDUWRJSL8br1Dj60wgMaKB0+HswVsrR6LloYZTg7ozyvM621V6+zsmwzbQxbVQyrytQ==
+  dependencies:
+    "@intlify/message-resolver" "9.1.10"
+    "@intlify/runtime" "9.1.10"
+    "@intlify/shared" "9.1.10"
+
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.npmjs.org/@jest/console/-/console-24.9.0.tgz"
@@ -1860,7 +1916,7 @@
   optionalDependencies:
     prettier "^1.18.2 || ^2.0.0"
 
-"@vue/devtools-api@^6.0.0", "@vue/devtools-api@^6.0.0-beta.11":
+"@vue/devtools-api@^6.0.0", "@vue/devtools-api@^6.0.0-beta.11", "@vue/devtools-api@^6.0.0-beta.7":
   version "6.1.4"
   resolved "https://registry.npmjs.org/@vue/devtools-api/-/devtools-api-6.1.4.tgz"
   integrity sha512-IiA0SvDrJEgXvVxjNkHPFfDx6SXw0b/TUkqMcDZWNg9fnCAHbTpoo59YfJ9QLFkwa3raau5vSlRVzMSLDnfdtQ==
@@ -2313,6 +2369,11 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+argparse@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
+  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
+
 arr-diff@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/arr-diff/-/arr-diff-4.0.0.tgz"
@@ -2441,6 +2502,11 @@ astral-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/astral-regex/-/astral-regex-1.0.0.tgz"
   integrity sha512-+Ryf6g3BKoRc7jfp7ad8tM4TtMiaWvbF/1/sQcZPkkS7ag3D5nMBCe2UfOTONtAkaG0tO0ij3C5Lwmf1EiyjHg==
+
+astronomia@^4.1.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/astronomia/-/astronomia-4.1.1.tgz#9ad4d3cd1dc8135b7c9e5cee37cb77160ee7af7f"
+  integrity sha512-TcJD9lUC5eAo0/Ji7rnQauX/yQbi0yZWM+JsNr77W3OA5fsrgvuFgubLMFwfw4VlZ29cu9dG/yfJbfvuTSftjg==
 
 async-each@^1.0.1:
   version "1.0.3"
@@ -3018,6 +3084,13 @@ cache-loader@^4.1.0:
     mkdirp "^0.5.1"
     neo-async "^2.6.1"
     schema-utils "^2.0.0"
+
+caldate@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/caldate/-/caldate-2.0.3.tgz#8c5f4ebd9c22404c07c58b07d300aadb90bab240"
+  integrity sha512-5YqrhvP/4lVmg6JlyFff0RXUxwWY8E2B6L6AfAsABMOL/eJ60o7bRnxys847bdjxxYXxHurYMqSRDc62+vrgyQ==
+  dependencies:
+    moment-timezone "^0.5.34"
 
 call-bind@^1.0.0, call-bind@^1.0.2:
   version "1.0.2"
@@ -3864,7 +3937,7 @@ cssnano-util-same-parent@^4.0.0:
   resolved "https://registry.npmjs.org/cssnano-util-same-parent/-/cssnano-util-same-parent-4.0.1.tgz"
   integrity sha512-WcKx5OY+KoSIAxBW6UBBRay1U6vkYheCdjyVNDm85zt5K9mHoGOfsOsqIszfAqrQQFIIKgjh2+FDgIj/zsl21Q==
 
-cssnano@^4.0.0, cssnano@^4.1.10:
+cssnano@^4.0.0, cssnano@^4.1.10, cssnano@^4.1.3:
   version "4.1.11"
   resolved "https://registry.npmjs.org/cssnano/-/cssnano-4.1.11.tgz"
   integrity sha512-6gZm2htn7xIPJOHY824ERgj8cNPgPxyCSnkXc4v7YvNW+TdVfzgngHcEhy/8D11kUWRUMbke+tC+AUcUsnMz2g==
@@ -3931,6 +4004,23 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+date-bengali-revised@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/date-bengali-revised/-/date-bengali-revised-2.0.2.tgz#4de6cbb7501a99bb1b1795f9fa4cd72da06c7d23"
+  integrity sha512-q9iDru4+TSA9k4zfm0CFHJj6nBsxP7AYgWC/qodK/i7oOIlj5K2z5IcQDtESfs/Qwqt/xJYaP86tkazd/vRptg==
+
+date-chinese@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/date-chinese/-/date-chinese-2.1.4.tgz#f471af3b72525b6005a16ec4e544a53b28c8e656"
+  integrity sha512-WY+6+Qw92ZGWFvGtStmNQHEYpNa87b8IAQ5T8VKt4wqrn24lBXyyBnWI5jAIyy7h/KVwJZ06bD8l/b7yss82Ww==
+  dependencies:
+    astronomia "^4.1.0"
+
+date-easter@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/date-easter/-/date-easter-1.0.2.tgz#b56161d535a57a21ba46ec33b653785616d7e8e2"
+  integrity sha512-mpC1izx7lUSLYl4B88V2W57eNB4xS2ic+ahxK2AYUsaBTsCeHzT6K5ymUKzL9YPFf/GlygFqpiD4/NO1hxDsLw==
+
 date-fns@^1.27.2:
   version "1.30.1"
   resolved "https://registry.npmjs.org/date-fns/-/date-fns-1.30.1.tgz"
@@ -3940,6 +4030,31 @@ date-fns@^2.28.0:
   version "2.28.0"
   resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.28.0.tgz"
   integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
+
+date-holidays-parser@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/date-holidays-parser/-/date-holidays-parser-3.4.1.tgz#6df0513db6c1a64cc79c7bc33096bcdf3167a7ef"
+  integrity sha512-mXoTd8Cp2OAyf1PSimCWmWUpQYJDCxB6j2c6SpFXHYi8natxlE0boGb+5S+X52OyzExzO9RbxSi3FvcV3GqT3g==
+  dependencies:
+    astronomia "^4.1.0"
+    caldate "^2.0.3"
+    date-bengali-revised "^2.0.2"
+    date-chinese "^2.1.4"
+    date-easter "^1.0.2"
+    deepmerge "^4.2.2"
+    jalaali-js "^1.2.6"
+    moment-timezone "^0.5.34"
+
+date-holidays@^3.16.1:
+  version "3.16.1"
+  resolved "https://registry.yarnpkg.com/date-holidays/-/date-holidays-3.16.1.tgz#38cb4d8c64ae47f6294555ca998b2de2ad04d595"
+  integrity sha512-0DhPUn6QI6/EfKx+OSVkixo1Jq7PdkCaULj9rYZLjuh+MQYuxar3cMrANHGrAwilI2X4SdByyQTYhotBHgcm6A==
+  dependencies:
+    date-holidays-parser "^3.4.1"
+    js-yaml "^4.1.0"
+    lodash.omit "^4.5.0"
+    lodash.pick "^4.4.0"
+    prepin "^1.0.3"
 
 dayjs@^1.11.3:
   version "1.11.3"
@@ -6140,7 +6255,7 @@ is-color-stop@^1.0.0:
     rgb-regex "^1.0.1"
     rgba-regex "^1.0.0"
 
-is-core-module@^2.8.1:
+is-core-module@^2.8.1, is-core-module@^2.9.0:
   version "2.9.0"
   resolved "https://registry.npmjs.org/is-core-module/-/is-core-module-2.9.0.tgz"
   integrity sha512-+5FPy5PnwmO3lvfMb0AsoPaBG+5KHUI0wYFXOtYPnVVVspTFUuMZNfNaNVRt3FZadstu2c8x23vykRW/NBoU6A==
@@ -6490,6 +6605,11 @@ istanbul-reports@^2.2.6:
   integrity sha512-uu1F/L1o5Y6LzPVSVZXNOoD/KXpJue9aeLRd0sM9uMXfZvzomB0WxVamWb5ue8kA2vVWEmW7EG+A5n3f1kqHKg==
   dependencies:
     html-escaper "^2.0.0"
+
+jalaali-js@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/jalaali-js/-/jalaali-js-1.2.6.tgz#f4ee4bf686ed32bb9656f101225be4b7a1c3fd21"
+  integrity sha512-io974va+Qyu+UfuVX3UIAgJlxLhAMx9Y8VMfh+IG00Js7hXQo1qNQuwSiSa0xxco0SVgx5HWNkaiCcV+aZ8WPw==
 
 javascript-stringify@^2.0.1:
   version "2.1.0"
@@ -6920,6 +7040,13 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
+js-yaml@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
+  integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
+  dependencies:
+    argparse "^2.0.1"
+
 jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.npmjs.org/jsbn/-/jsbn-0.1.1.tgz"
@@ -7298,6 +7425,16 @@ lodash.memoize@4.x, lodash.memoize@^4.1.2:
   resolved "https://registry.npmjs.org/lodash.memoize/-/lodash.memoize-4.1.2.tgz"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
+lodash.omit@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.omit/-/lodash.omit-4.5.0.tgz#6eb19ae5a1ee1dd9df0b969e66ce0b7fa30b5e60"
+  integrity sha512-XeqSp49hNGmlkj2EJlfrQFIzQ6lXdNro9sddtQzcJY8QaoC2GO0DT7xaIokHeyM+mIT0mPMlPvkYzg2xCuHdZg==
+
+lodash.pick@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
+  integrity sha512-hXt6Ul/5yWjfklSGvLQl8vM//l3FtyHZeuelpzK6mm99pNvN9yTDruNZPEJZD1oWrqo+izBmB7oUfWgcCX7s4Q==
+
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.npmjs.org/lodash.sortby/-/lodash.sortby-4.7.0.tgz"
@@ -7315,7 +7452,7 @@ lodash.uniq@^4.5.0:
 
 lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.3, lodash@^4.17.4:
   version "4.17.21"
-  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log-symbols@^1.0.2:
@@ -7635,6 +7772,18 @@ mkdirp@0.x, mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@^0.5.5, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.6"
 
+moment-timezone@^0.5.34:
+  version "0.5.34"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.34.tgz#a75938f7476b88f155d3504a9343f7519d9a405c"
+  integrity sha512-3zAEHh2hKUs3EXLESx/wsgw6IQdusOT8Bxm3D9UrHPQR7zlMmzwybC8zHEM1tQ4LJwP7fcxrWr8tuBg05fFCbg==
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0":
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
+  integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/move-concurrently/-/move-concurrently-1.0.1.tgz"
@@ -7864,6 +8013,11 @@ normalize-url@^3.0.0:
   version "3.3.0"
   resolved "https://registry.npmjs.org/normalize-url/-/normalize-url-3.3.0.tgz"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
+
+normalize.css@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-8.0.1.tgz#9b98a208738b9cc2634caacbc42d131c97487bf3"
+  integrity sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==
 
 npm-run-path@^2.0.0:
   version "2.0.2"
@@ -8358,6 +8512,11 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+perfect-scrollbar@^1.5.5:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/perfect-scrollbar/-/perfect-scrollbar-1.5.5.tgz#41a211a2fb52a7191eff301432134ea47052b27f"
+  integrity sha512-dzalfutyP3e/FOpdlhVryN4AJ5XDVauVWxybSkLZmakFE2sS3y3pc4JnSprw8tGmHvkaG5Edr5T7LBTZ+WWU2g==
+
 performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz"
@@ -8378,7 +8537,7 @@ picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
   resolved "https://registry.npmjs.org/picomatch/-/picomatch-2.3.1.tgz"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
-pify@^2.0.0:
+pify@^2.0.0, pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/pify/-/pify-2.3.0.tgz"
   integrity sha1-7RQaasBDqEnqWISY59yosVMw6Qw=
@@ -8519,6 +8678,16 @@ postcss-discard-overridden@^4.0.1:
   integrity sha512-IYY2bEDD7g1XM1IDEsUT4//iEYCxAmP5oDSFMVU/JVvT7gh+l4fmjciLqGgwjdWpQIdb0Che2VX00QObS5+cTg==
   dependencies:
     postcss "^7.0.0"
+
+postcss-import@^12.0.0:
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/postcss-import/-/postcss-import-12.0.1.tgz#cf8c7ab0b5ccab5649024536e565f841928b7153"
+  integrity sha512-3Gti33dmCjyKBgimqGxL3vcV8w9+bsHwO5UrBawp796+jdardbcFl4RP5w/76BwNL7aGzpKstIfF9I+kdE8pTw==
+  dependencies:
+    postcss "^7.0.1"
+    postcss-value-parser "^3.2.3"
+    read-cache "^1.0.0"
+    resolve "^1.1.7"
 
 postcss-load-config@^2.0.0:
   version "2.1.2"
@@ -8778,7 +8947,7 @@ postcss-unique-selectors@^4.0.1:
     postcss "^7.0.0"
     uniqs "^2.0.0"
 
-postcss-value-parser@^3.0.0:
+postcss-value-parser@^3.0.0, postcss-value-parser@^3.2.3:
   version "3.3.1"
   resolved "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-3.3.1.tgz"
   integrity sha512-pISE66AbVkp4fDQ7VHBwRNXzAAKJjw4Vw7nWI/+Q3vuly7SNfgYXvm6i5IgFylHGK5sP/xHAbB7N49OS4gWNyQ==
@@ -8814,6 +8983,11 @@ prepend-http@^1.0.0:
   version "1.0.4"
   resolved "https://registry.npmjs.org/prepend-http/-/prepend-http-1.0.4.tgz"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
+
+prepin@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/prepin/-/prepin-1.0.3.tgz#6996d34f1f8bf0de0bacf525e3037da79b7df91b"
+  integrity sha512-0XL2hreherEEvUy0fiaGEfN/ioXFV+JpImqIzQjxk6iBg4jQ2ARKqvC4+BmRD8w/pnpD+lbxvh0Ub+z7yBEjvA==
 
 "prettier@^1.18.2 || ^2.0.0":
   version "2.6.2"
@@ -9034,6 +9208,13 @@ react-is@^16.8.4:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+read-cache@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/read-cache/-/read-cache-1.0.0.tgz#e664ef31161166c9751cdbe8dbcf86b5fb58f774"
+  integrity sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==
+  dependencies:
+    pify "^2.3.0"
 
 read-pkg-up@^4.0.0:
   version "4.0.0"
@@ -9308,6 +9489,15 @@ resolve@1.x, resolve@^1.10.0, resolve@^1.10.1, resolve@^1.12.0, resolve@^1.13.1,
   integrity sha512-Hhtrw0nLeSrFQ7phPp4OOcVjLPIeMnRlr5mcnVuMe7M/7eBn98A3hmFRLoFo3DLZkivSYwhRUJTyPyWAk56WLw==
   dependencies:
     is-core-module "^2.8.1"
+    path-parse "^1.0.7"
+    supports-preserve-symlinks-flag "^1.0.0"
+
+resolve@^1.1.7:
+  version "1.22.1"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.1.tgz#27cb2ebb53f91abb49470a928bba7558066ac177"
+  integrity sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==
+  dependencies:
+    is-core-module "^2.9.0"
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
@@ -9815,15 +10005,15 @@ source-map@0.5.6:
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.5.6.tgz"
   integrity sha1-dc449SvwczxafwwRjYEzSiu19BI=
 
+source-map@0.6.1, source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0, source-map@~0.6.1:
+  version "0.6.1"
+  resolved "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz"
+  integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
+
 source-map@^0.5.6:
   version "0.5.7"
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.5.7.tgz"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
-
-source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0, source-map@~0.6.1:
-  version "0.6.1"
-  resolved "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz"
-  integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
 source-map@^0.7.3:
   version "0.7.3"
@@ -10822,10 +11012,25 @@ vue-feather@2:
   resolved "https://registry.npmjs.org/vue-feather/-/vue-feather-2.0.0.tgz"
   integrity sha512-GBvxJWu2ycGTpB8duYWnc5S/TwWPPb2G5Ft2NbkwK1vZkUDUOTYqIb4Nh1HOL6A37Isfrd0Guun0lesS97PfxA==
 
+vue-gtag@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-2.0.1.tgz#d4dc1b9cf79809c37ce844824c0f7fa97af520dd"
+  integrity sha512-aM4A58FVL0wV2ptYi+xzAjeg+pQVRyUcfBc5UkXAwQrR4t3WBhor50Izp2I+3Oo7+l+vWJ7u78DGcNzReb8S/A==
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.npmjs.org/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
+
+vue-i18n@^9.1.10:
+  version "9.1.10"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-9.1.10.tgz#7ad516b89ba28debb90fc4181c9a2faec9ad97f9"
+  integrity sha512-jpr7gV5KPk4n+sSPdpZT8Qx3XzTcNDWffRlHV/cT2NUyEf+sEgTTmLvnBAibjOFJ0zsUyZlVTAWH5DDnYep+1g==
+  dependencies:
+    "@intlify/core-base" "9.1.10"
+    "@intlify/shared" "9.1.10"
+    "@intlify/vue-devtools" "9.1.10"
+    "@vue/devtools-api" "^6.0.0-beta.7"
 
 vue-jest@^3.0.5:
   version "3.0.7"
@@ -10900,6 +11105,15 @@ vue-universal-modal@^1.1.3:
   version "1.1.3"
   resolved "https://registry.npmjs.org/vue-universal-modal/-/vue-universal-modal-1.1.3.tgz"
   integrity sha512-YDDe0TuxwnjH9Pw6jc4WRndSeSCUVNy0a3xIFdNMzbObvhwiOn28mH9ZoSqgdtuNCmmePds10ExP9/3B88L25w==
+
+vue3-perfect-scrollbar@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/vue3-perfect-scrollbar/-/vue3-perfect-scrollbar-1.6.0.tgz#06a9f5e2bdde993bee1695a6ef33dcb41d37216e"
+  integrity sha512-bH8rk8a5gH0lh/1YGdQCfSpQtrUcBBQ2bAWCt3I1zZYlNDCm3lL/SWzhzv+aN/OjMSqYrslkm1O/ml8jTUZpTg==
+  dependencies:
+    cssnano "^4.1.3"
+    perfect-scrollbar "^1.5.5"
+    postcss-import "^12.0.0"
 
 vue3-simple-typeahead@^1.0.5:
   version "1.0.5"
