@@ -1,12 +1,12 @@
 <template>
   <div class="job">
-    <span class="job__delete" @click="emit('delete', uuid)"><vue-feather type="x" size="0.8em"></vue-feather></span>
+    <span class="job__delete" @click="emit('delete', uid)"><vue-feather type="x" size="0.8em"></vue-feather></span>
     <p class="job__title">{{ name }}</p>
     <p class="job__time">{{ startedTimeAt }} -
       {{ finishedTimeAt }}
       ({{ workHours }})</p>
     <p class="job__salary">
-      {{ humanizeSalary(salary) }} €
+      {{ humanizeSalary(salary) }} € ({{ isTaxed ? 'N' : 'B' }})
     </p>
   </div>
 </template>
@@ -18,7 +18,7 @@ import { computed } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
-  uuid: String,
+  uid: String,
   name: String,
   isHolidayPay: Boolean,
   isTaxed: Boolean,

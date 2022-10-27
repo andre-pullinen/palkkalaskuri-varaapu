@@ -21,8 +21,8 @@
             @onInput="onInputEventHandler"
             @selectItem="selectItemEventHandler"
           />
-          <Datepicker class="add-shift__input" v-model="workStarted" time-picker />
-          <Datepicker class="add-shift__input" v-model="workFinished" time-picker />
+          <Datepicker class="add-shift__input" v-model="workStarted" time-picker textInput modeHeight="120" />
+          <Datepicker class="add-shift__input" v-model="workFinished" time-picker textInput modeHeight="120" />
           <checkbox v-model="isLunch">Ruokataukko</checkbox>
           <input class="add-shift__input add-shift__input-styled" type="number" v-model="lunchTime" v-if="isLunch">
         </div>
@@ -166,8 +166,10 @@ function createDaysForNextMonth (year, month, currentMonthDays) {
     `${year}-${month}-${currentMonthDays.length}`
   )
   const nextMonth = dayjs(`${year}-${month}-01`).add(1, 'month')
-
-  return [...Array(6 - lastDayOfTheMonthWeekday)].map((day, index) => {
+  console.log('lastDayOfTheMonthWeekday', lastDayOfTheMonthWeekday)
+  const dayForNextWeek = 6 - (lastDayOfTheMonthWeekday === 6 ? 0 : lastDayOfTheMonthWeekday)
+  console.log('dayForNextWeek', dayForNextWeek)
+  return [...Array(dayForNextWeek + 1)].map((day, index) => {
     const date = dayjs(
       `${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`
     ).format('YYYY-MM-DD')
@@ -184,8 +186,8 @@ const periods = reactive({})
 const weeks = ref([])
 let week = { days: [], weekNumber: 0 }
 
-const currentYear = ref(2022)
-const currentMonth = ref(6)
+const currentYear = ref(now.year())
+const currentMonth = ref(now.month() + 1)
 const year = computed({
   get: () => currentYear.value,
   set: val => {
@@ -212,7 +214,7 @@ function updateCalendar () {
   const daysInMouth = [...createDaysForPreviousMonth(year.value, month.value, current),
     ...current,
     ...createDaysForNextMonth(year.value, month.value, current)]
-  console.log(createDaysForNextMonth(year.value, month.value, current))
+  console.log(daysInMouth)
 
   const periodStarted = dayjs(store.state.user.startedAt).hour(0).minute(0).second(0)
   weeks.value.splice(0, weeks.value.length)

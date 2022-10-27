@@ -3,8 +3,19 @@
 import dayjs from 'dayjs'
 // eslint-disable-next-line no-unused-vars
 import Holidays from 'date-holidays'
+import { ref, push, set, remove } from 'firebase/database'
+import { database } from '@/firebase'
+import { v4 as uuidv4 } from 'uuid'
 
 const initialState = () => ({
+  isAuth: false,
+  auth: {
+    uid: '',
+    name: '',
+    email: '',
+    photo: '',
+    token: ''
+  },
   interval: 14,
   startedAt: '',
   isSetup: false,
@@ -117,7 +128,11 @@ const actions = {
   setup ({ commit }) {
     commit('SETUP')
   },
-  addJob ({ commit }, payload) {
+  auth ({ commit }, payload) {
+    commit('USER_AUTH', payload.status)
+    commit('USER_FETCH', payload.user)
+  },
+  async addJob ({ commit, state }, payload) {
     let usualHours = 0
     let tonightHours = 0
     let nightHours = 0
@@ -179,13 +194,29 @@ const actions = {
     }
     n.setSeconds(+Math.abs(SAt.diff(payload.finishedAt, 'hour', true)) * 60 * 60)
     payload.workHours = n.toTimeString().slice(0, 5)
-    commit('ADD_JOB', payload)
-    if (payload.name.trim() !== '') {
-      commit('INCREASE_PLACE', payload.name.trim())
+    payload.startedAt = payload.startedAt.toString()
+    payload.finishedAt = payload.finishedAt.toString()
+    payload.uid = uuidv4()
+    payload.date = payload.date.format('YYYY-MM-DD')
+    if (state.isAuth) {
+      const pushedItem = push(ref(database, `users/${state.auth.uid}/shifts`))
+      await set(pushedItem, payload)
+      payload.uid = pushedItem.key
+    }
+    await commit('ADD_JOB', payload)
+    const trimmedName = payload.name.trim()
+    if (trimmedName !== '') {
+      commit('INCREASE_PLACE', trimmedName)
     }
   },
-  removeJob ({ commit }, payload) {
-    commit('REMOVE_JOB', payload)
+  async removeJob ({ commit, state }, payload) {
+    if (state.isAuth) {
+      remove(ref(database, `users/${state.auth.uid}/shifts/${payload.uid}`))
+    }
+    await commit('REMOVE_JOB', payload)
+  },
+  async clearJob ({ commit }, payload) {
+    await commit('CLEAR_JOB', payload)
   }
 }
 // Mutations
@@ -193,19 +224,31 @@ const mutations = {
   SETUP (state) {
     state.isSetup = false
   },
+  USER_AUTH (state, status) {
+    state.isAuth = status
+  },
+  USER_FETCH (state, user) {
+    state.auth = user
+  },
   INCREASE_PLACE (state, name) {
     state.places[name]++
   },
+  CLEAR_JOB (state, payload) {
+    delete state.jobHistory[payload.date]
+  },
   ADD_JOB (state, payload) {
-    if (!state.jobHistory[payload.date.format('YYYY-MM-DD')]) {
-      state.jobHistory[payload.date.format('YYYY-MM-DD')] = {}
+    const { uid, date } = payload
+    if (!state.jobHistory[date]) {
+      state.jobHistory[date] = {}
     }
-    const uuid = uuidv4()
-    state.jobHistory[payload.date.format('YYYY-MM-DD')][uuid] = payload
+    state.jobHistory[payload.date][uid] = payload
   },
   REMOVE_JOB (state, payload) {
     if (state.jobHistory[payload.date]) {
-      delete state.jobHistory[payload.date][payload.uuid]
+      console.log(state.jobHistory[payload.date][payload.uid])
+      console.log(state.jobHistory[payload.date])
+      console.log(payload)
+      delete state.jobHistory[payload.date][payload.uid]
     }
   },
   SET_EVAK (state, val) {
@@ -229,12 +272,6 @@ const mutations = {
   SET_STARTEDAT (state, val) {
     state.startedAt = val
   }
-}
-
-function uuidv4 () {
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  )
 }
 
 export default {

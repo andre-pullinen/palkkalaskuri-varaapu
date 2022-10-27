@@ -2,6 +2,7 @@ import Home from '@/views/Home'
 import LangParent from '@/views/LangParent'
 import i18n from '@/i18n'
 const Calendar = () => import('@/views/Calendar')
+const CalendarV2 = () => import('@/views/CalendarV2')
 const Settings = () => import('@/views/Settings')
 const supportedLangs = ['fi', 'en']
 
@@ -34,6 +35,15 @@ export default [{
       component: Calendar,
       meta: {
         name: 'Kalenteri'
+        // middleware: [auth]
+      }
+    },
+    {
+      path: 'calendar2',
+      name: 'calendar2',
+      component: CalendarV2,
+      meta: {
+        name: 'Kalenteri testi'
         // middleware: [auth]
       }
     },

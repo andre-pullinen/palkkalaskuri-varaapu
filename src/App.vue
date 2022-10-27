@@ -1,13 +1,6 @@
 <template>
   <perfect-scrollbar ref="scroll">
-  <div id="nav">
-    <span v-for="(localRoute, index) in routes[0].children" :key="index">
-      <router-link :to="{ name: localRoute.name, params: { lang: 'fi' } }">
-        {{ localRoute.meta?.name || 'none' }}
-      </router-link>
-      <b v-if="index !== routes[0].children.length -1"> | </b>
-    </span>
-  </div>
+  <navbar />
   <router-view />
   </perfect-scrollbar>
 </template>
@@ -16,7 +9,9 @@
 import { onUnmounted, watch, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import routes from '@/router/routes/main.route'
+import { auth as authService } from '@/firebase'
+import Navbar from '@/components/Base/Navbar'
+import { mapActions } from '@/map'
 
 const route = useRoute()
 const store = useStore()
@@ -29,7 +24,34 @@ watch(() => route.name, () => {
 
 const zoomEvent = new Event('zoom')
 const currentRatio = window.devicePixelRatio
+const { auth } = mapActions('user')
 
+authService.onAuthStateChanged(user => {
+  if (user) {
+    // User just signed in, we should not display dialog next time because of firebase auto-login
+    console.log(user)
+    // console.log(google.auth.getClient())
+    auth({
+      status: true,
+      user:
+        {
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photo:
+          user.photoURL,
+          token:
+          user.accessToken
+        }
+    })
+  } else {
+    // User just signed-out or auto-login failed, we will show sign-in form immediately the next time he loads the page
+    console.log('wwhoops')
+
+    // Here implement logic to trigger the login dialog or redirect to sign-in page, if necessary. Don't redirect if dialog is already visible.
+    // e.g. showDialog()
+  }
+})
 function zoomHandler () {
   scroll.value.update()
 }
@@ -79,5 +101,8 @@ onUnmounted(() => {
       color: #42b983;
     }
   }
+}
+* {
+  box-sizing: border-box;
 }
 </style>

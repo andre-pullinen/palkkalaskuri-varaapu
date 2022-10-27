@@ -27,7 +27,7 @@ dayjs.extend(weekOfYear)
 dayjs.extend(duration)
 dayjs.locale(fiLocale)
 
-createApp(App)
+export const Vue = createApp(App)
   .use(store)
   .use(router)
   .use(i18n)

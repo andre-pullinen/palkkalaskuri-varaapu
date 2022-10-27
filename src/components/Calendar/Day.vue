@@ -17,7 +17,7 @@
              :finished-at="dayjs(shift.finishedAt)"
              :name="shift.name"
              :key="key"
-             :uuid="key"
+             :uid="shift.uid"
              :work-time="shift.workTime"
              :finished-time-at="shift.finishedTimeAt"
              :started-time-at="shift.startedTimeAt"
@@ -56,13 +56,13 @@ const holiday = hd.isHoliday(props.date)
 const isHoliday = holiday && holiday.some(e => e.type === 'public')
 const isBankHoliday = holiday && holiday.some(e => e.type === 'bank')
 
-function deleteJob (uuid) {
+function deleteJob (uid) {
   event('shift', {
     event_category: 'remove',
     event_label: props.date,
     value: props.date
   })
-  removeJob({ uuid, date: props.date })
+  removeJob({ uid, date: props.date })
 }
 function addShift () {
   eventBus.trigger('day.addShift', props.date)
@@ -102,10 +102,8 @@ function addShift () {
   flex-grow: 1;
   flex-basis: 0;
   max-width: 200px;
-  height: 100px;
-  padding-top: 2.2rem;
-  padding-left: 0.9rem;
-  padding-right: 0.9rem;
+  min-height: 120px;
+  padding: 2.2rem 0.9rem 1rem 0.9rem;
   border-bottom: 1px solid #ddd;
   &__content {
     position: relative;
@@ -117,6 +115,9 @@ function addShift () {
     top: 5px;
     left: 0.9em;
     font-size: 1.2em;
+    &-clear {
+      color: red;
+    }
     &-holiday {
       color: #d26e14;
     }
